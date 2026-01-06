@@ -16,6 +16,9 @@
     <Filter Include="Source\System\Window">
       <UniqueIdentifier>{bd7cf189-f7a6-4131-8d0a-5603af019765}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\System\Utility">
+      <UniqueIdentifier>{b58f495f-6f11-470c-8cc0-2e66b9e0e3be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h">
@@ -27,6 +30,15 @@
     <ClInclude Include="Source\System\Window\Window.h">
       <Filter>Source\System\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Utility\Utility.h">
+      <Filter>Source\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\System.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\GraphicsDevice.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp">
@@ -37,6 +49,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\Window\Window.cpp">
       <Filter>Source\System\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Utility\Utility.cpp">
+      <Filter>Source\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\GraphicsDevice.cpp">
+      <Filter>Source\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
