@@ -10,6 +10,8 @@ public:
 	// ウィンドウメッセージ処理
 	bool ProcessMessage();
 
+	HWND GetWndHandle() const { return m_hWnd; }
+
 private:
 
 	HWND m_hWnd;		// ウィンドウハンドル

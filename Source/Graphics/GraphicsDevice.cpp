@@ -1,6 +1,6 @@
 #include "GraphicsDevice.h"
 
-bool GraphicsDevice::Init()
+bool GraphicsDevice::Init(HWND hWnd, int w, int h)
 {
 	if (!CreateFactory())
 	{
@@ -17,6 +17,12 @@ bool GraphicsDevice::Init()
 	if (!CreateCommandList())
 	{
 		assert(false && "コマンドリストの作成失敗");
+		return false;
+	}
+
+	if (!CreateSwapChain(hWnd , w , h))
+	{
+		assert(false && "スワップチェインの作成失敗");
 		return false;
 	}
 
@@ -148,6 +154,29 @@ bool GraphicsDevice::CreateCommandList()
 	hr = m_pDevice->CreateCommandQueue(&cmdQueueDesc , IID_PPV_ARGS(&m_pCmdQueue));
 
 	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateSwapChain(HWND hwnd, int width, int height)
+{
+	DXGI_SWAP_CHAIN_DESC1 swapchainDesc = {};
+
+	swapchainDesc.Width = width;
+	swapchainDesc.Height = height;
+	swapchainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapchainDesc.SampleDesc.Count = 1;
+	swapchainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
+	swapchainDesc.BufferCount = 2;
+	swapchainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	swapchainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+	auto result = m_pDxgiFactory->CreateSwapChainForHwnd(m_pCmdQueue.Get() , hwnd , &swapchainDesc , nullptr , nullptr , (IDXGISwapChain1**)m_pSwapChain.ReleaseAndGetAddressOf());
+
+	if (FAILED(result))
 	{
 		return false;
 	}

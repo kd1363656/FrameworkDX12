@@ -15,13 +15,16 @@ int WINAPI WinMain(HINSTANCE , HINSTANCE , LPSTR , int)
 
 void Application::Execute()
 {
-	if (!m_window.Create(1280 , 720 , L"FrameworkDX12" , L"Window"))
+	static const float width  = 1280.0F;
+	static const float height = 720.0F;
+
+	if (!m_window.Create(width , height , L"FrameworkDX12" , L"Window"))
 	{
 		assert(false && "ウィンドウ作成失敗。");
 		return;
 	}
 
-	if (!GraphicsDevice::Instance().Init())
+	if (!GraphicsDevice::Instance().Init(m_window.GetWndHandle() , width , height))
 	{
 		assert(false && "グラフィックスデバイス初期化失敗。");
 		return;
