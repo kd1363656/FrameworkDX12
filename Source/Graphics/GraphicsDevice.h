@@ -12,6 +12,10 @@ public:
 
 	void WaitForCommandQueue();
 
+	auto& GetDevice() { return m_pDevice; }
+
+	auto& GetCmdList() { return m_pCmdList; }
+
 private:
 
 	bool CreateFactory();

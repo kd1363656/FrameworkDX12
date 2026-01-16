@@ -22,6 +22,15 @@
     <Filter Include="Source\Graphics\RTVHeap">
       <UniqueIdentifier>{58750fca-6d08-4439-b9f5-0ebbe4886e8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\Mesh">
+      <UniqueIdentifier>{59492296-ffc7-4894-8bf0-fd901f642504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{f5688298-9a23-4314-a2c9-551f70f79217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader">
+      <UniqueIdentifier>{8f7123b9-e79c-4ce9-9438-a1463d7d84c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h">
@@ -45,6 +54,9 @@
     <ClInclude Include="Source\Graphics\RTVHeap\RTVHeap.h">
       <Filter>Source\Graphics\RTVHeap</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\Mesh\Mesh.h">
+      <Filter>Source\Graphics\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp">
@@ -64,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\RTVHeap\RTVHeap.cpp">
       <Filter>Source\Graphics\RTVHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Mesh\Mesh.cpp">
+      <Filter>Source\Graphics\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
