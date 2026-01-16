@@ -19,6 +19,9 @@
     <Filter Include="Source\System\Utility">
       <UniqueIdentifier>{b58f495f-6f11-470c-8cc0-2e66b9e0e3be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\RTVHeap">
+      <UniqueIdentifier>{58750fca-6d08-4439-b9f5-0ebbe4886e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h">
@@ -39,6 +42,9 @@
     <ClInclude Include="Source\Graphics\GraphicsDevice.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\RTVHeap\RTVHeap.h">
+      <Filter>Source\Graphics\RTVHeap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp">
@@ -55,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\GraphicsDevice.cpp">
       <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\RTVHeap\RTVHeap.cpp">
+      <Filter>Source\Graphics\RTVHeap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

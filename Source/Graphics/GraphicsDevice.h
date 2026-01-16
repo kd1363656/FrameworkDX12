@@ -1,5 +1,7 @@
 #pragma once
 
+class RTVHeap;
+
 class GraphicsDevice
 {
 public:
@@ -18,6 +20,9 @@ private:
 
 	// スワップチェイン作成
 	bool CreateSwapChain(HWND hwnd , int width  , int height);
+
+	// スワップチェイン"RTV"の作成
+	bool CreateSwapChainRTV();
 
 	enum class GPUTier
 	{
@@ -39,8 +44,11 @@ private:
 
 	ComPtr<IDXGISwapChain4> m_pSwapChain = nullptr;
 
-	GraphicsDevice () = default;
-	~GraphicsDevice() = default;
+	std::array<ComPtr<ID3D12Resource>, 2> m_pSwapChainBuffers;
+	std::unique_ptr<RTVHeap>			  m_pRTVHeap		  = nullptr;
+
+	GraphicsDevice ();
+	~GraphicsDevice();
 
 public:
 
