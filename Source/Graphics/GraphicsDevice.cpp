@@ -8,6 +8,10 @@ bool GraphicsDevice::Init(HWND hWnd, int w, int h)
 		return false;
 	}
 
+#ifdef _DEBUG
+	EnableDebugLayer();
+#endif
+
 	if (!CreateDevice())
 	{
 		assert(false && "D3D12デバイス作成失敗");
@@ -39,7 +43,56 @@ bool GraphicsDevice::Init(HWND hWnd, int w, int h)
 		return false;
 	}
 
+	if (!CreateFence())
+	{
+		assert(false && "フェンスの作成失敗");
+		return false;
+	}
+
 	return true;
+}
+
+void GraphicsDevice::ScreenFlip()
+{
+	auto bbIdx = m_pSwapChain->GetCurrentBackBufferIndex();
+	SetResourceBarrier(m_pSwapChainBuffers[bbIdx].Get() , D3D12_RESOURCE_STATE_PRESENT , D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	auto rtvH = m_pRTVHeap->GetRTVCPUHandle(bbIdx);
+	m_pCmdList->OMSetRenderTargets(1 , &rtvH , false , nullptr);
+
+	float clearColor[] = { 1.0F , 0.0F , 1.0F , 1.0F };
+	m_pCmdList->ClearRenderTargetView(rtvH , clearColor , 0 , nullptr);
+
+	SetResourceBarrier(m_pSwapChainBuffers[bbIdx].Get() , D3D12_RESOURCE_STATE_RENDER_TARGET , D3D12_RESOURCE_STATE_PRESENT);
+
+	m_pCmdList->Close();
+	ID3D12CommandList* cmdlists[] = { m_pCmdList.Get() };
+	m_pCmdQueue->ExecuteCommandLists(1 , cmdlists);
+
+	WaitForCommandQueue();
+
+	m_pCmdAllocator->Reset();
+	m_pCmdList->Reset(m_pCmdAllocator.Get() , nullptr);
+
+	m_pSwapChain->Present(1 , 0);
+}
+
+void GraphicsDevice::WaitForCommandQueue()
+{
+	m_pCmdQueue->Signal(m_pFence.Get() , ++m_fenceVal);
+
+	if (m_pFence->GetCompletedValue() != m_fenceVal)
+	{
+		auto event = CreateEvent(nullptr , false , false , nullptr);	// イベントハンドルの取得
+		if (!event)
+		{
+			assert(false && "イベントエラー、アプリケーションを終了します。");
+		}
+
+		m_pFence->SetEventOnCompletion(m_fenceVal , event);
+		WaitForSingleObject(event , INFINITE);
+		CloseHandle(event);
+	}
 }
 
 bool GraphicsDevice::CreateFactory()
@@ -214,5 +267,39 @@ bool GraphicsDevice::CreateSwapChainRTV()
 	return true;
 }
 
+bool GraphicsDevice::CreateFence()
+{
+	auto result = m_pDevice->CreateFence(m_fenceVal , D3D12_FENCE_FLAG_NONE , IID_PPV_ARGS(&m_pFence));
+
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void GraphicsDevice::SetResourceBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after)
+{
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Transition.pResource   = pResource;
+	barrier.Transition.StateAfter  = after;
+	barrier.Transition.StateBefore = before;
+
+	m_pCmdList->ResourceBarrier(1 , &barrier);
+}
+
+void GraphicsDevice::EnableDebugLayer()
+{
+	ID3D12Debug* debugLayer = nullptr;
+
+	D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer));
+	debugLayer->EnableDebugLayer();
+	debugLayer->Release();
+}
+
 GraphicsDevice::GraphicsDevice () = default;
-GraphicsDevice::~GraphicsDevice() = default;
+GraphicsDevice::~GraphicsDevice()
+{
+	WaitForCommandQueue();
+}

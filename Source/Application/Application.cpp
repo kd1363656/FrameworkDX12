@@ -36,5 +36,7 @@ void Application::Execute()
 		{
 			break;
 		}
+
+		GraphicsDevice::Instance().ScreenFlip();
 	}
 }

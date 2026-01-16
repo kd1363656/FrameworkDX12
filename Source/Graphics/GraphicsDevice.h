@@ -8,6 +8,10 @@ public:
 
 	bool Init(HWND hWnd , int w , int h);
 
+	void ScreenFlip();
+
+	void WaitForCommandQueue();
+
 private:
 
 	bool CreateFactory();
@@ -24,6 +28,12 @@ private:
 	// スワップチェイン"RTV"の作成
 	bool CreateSwapChainRTV();
 
+	bool CreateFence();
+
+	void SetResourceBarrier(ID3D12Resource* pResource , D3D12_RESOURCE_STATES before , D3D12_RESOURCE_STATES after);
+
+	void EnableDebugLayer();
+	
 	enum class GPUTier
 	{
 		NVIDA   ,
@@ -46,6 +56,9 @@ private:
 
 	std::array<ComPtr<ID3D12Resource>, 2> m_pSwapChainBuffers;
 	std::unique_ptr<RTVHeap>			  m_pRTVHeap		  = nullptr;
+
+	ComPtr<ID3D12Fence> m_pFence   = nullptr;
+	UINT64              m_fenceVal = 0;
 
 	GraphicsDevice ();
 	~GraphicsDevice();
