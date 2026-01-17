@@ -48,6 +48,7 @@ void RootSignature::Create(GraphicsDevice* pGraphicsDevice, const std::vector<Ra
 				rootParams[i].DescriptorTable.NumDescriptorRanges = 1;
 				rootParams[i].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 				++samplerCount;
+				bSampler = true;
 				break;
 
 			case RangeType::UAV:
@@ -56,6 +57,7 @@ void RootSignature::Create(GraphicsDevice* pGraphicsDevice, const std::vector<Ra
 				rootParams[i].DescriptorTable.pDescriptorRanges = &ranges[i];
 				rootParams[i].DescriptorTable.NumDescriptorRanges = 1;
 				rootParams[i].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+				++uavCount;
 				break;
 			default:
 				break;
